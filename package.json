@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "dev:ecommerce:backend": "bun --cwd apps/ecommerce/backend dev",
+    "dev:ecommerce:frontend": "bun --cwd apps/ecommerce/frontend dev",
+    "dev:ota:backend": "bun --cwd apps/ota/backend dev",
+    "dev:ota:frontend": "bun --cwd apps/ota/frontend dev",
+    "dev:all": "concurrently \"bun run dev:ecommerce:backend\" \"bun run dev:ecommerce:frontend\" \"bun run dev:ota:backend\" \"bun run dev:ota:frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}
