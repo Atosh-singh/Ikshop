@@ -13,13 +13,13 @@ Dark green: #28b485
 }
 
 html {
-  font-size: 62.5%;
+  font-size: 62.5%; /* This makes 1rem = 10px */
 }
 
 body {
   font-family: "Lato", sans-serif;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1.6rem; /* This makes the default font-size 16px */
   line-height: 1.7;
   color: #777;
   padding: 0;
@@ -29,14 +29,9 @@ body {
 
 .header {
   height: 95vh;
-  background-image: linear-gradient(
-      to right bottom,
-      rgba(126, 213, 111, 0.8),
-      rgba(40, 180, 131, 0.8)
-    ),
-    url('/hero.jpg'); /* from public folder */
+  background-color: rgba(40, 180, 131, 0.8); /* You can choose a solid color or gradient */
   background-size: cover;
-  background-position: top;
+  background-position: center;
   position: relative;
   clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%);
 }
@@ -71,9 +66,9 @@ body {
 /* Heading main title */
 .heading-primary-main {
   display: block;
-  font-size: 5rem;           /* smaller than 6rem so both texts fit better */
+  font-size: 5rem;
   font-weight: 400;
-  letter-spacing: 2rem;      /* reduced so it's not too spread out */
+  letter-spacing: 2rem;
   animation: moveInLeft 1s ease-out 0.5s both;
   white-space: nowrap;
 }
@@ -86,7 +81,7 @@ body {
   animation: moveInRight 1s ease-out 0.5s both;
 }
 
-/* Keyframes */
+/* Keyframes for animations */
 @keyframes moveInLeft {
   0% { opacity: 0; transform: translateX(-10rem); }
   80% { transform: translateX(1rem); }
@@ -120,12 +115,12 @@ body {
 
 .btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 1rem 2rem rgba(0,0,0,.2);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
 }
 
 .btn:active {
   transform: translateY(-1px);
-  box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
 }
 
 .btn-white {
@@ -159,7 +154,7 @@ body {
   animation: moveInBottom 0.5s ease-out 2s backwards;
 }
 
-
+/* Card Container for Two Cards Side by Side */
 .cards-container {
   display: flex;
   gap: 2rem;
@@ -168,14 +163,14 @@ body {
 }
 
 .card {
-  background-color: rgba(255,255,255,0.9);
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 1rem;
   padding: 2rem 3rem;
   text-align: center;
   min-width: 250px;
   max-width: 320px;
-    min-height: 300px;      
-  box-shadow: 0 .5rem 1rem rgba(0,0,0,0.15);
+  min-height: 300px;
+  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(5px);
 }
 
@@ -201,7 +196,6 @@ body {
   padding-left: 1.5rem;
 }
 
-
 .card-points li {
   margin-bottom: 0.5rem;
   list-style-type: disc;
@@ -209,7 +203,7 @@ body {
 
 /* Optional - style buttons inside cards slightly different */
 .card .btn-white {
-   display: block;
+  display: block;
   margin: 0 auto;
   font-size: 1.4rem;
   padding: 1rem 2.5rem;
