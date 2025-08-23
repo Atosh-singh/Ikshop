@@ -7,6 +7,7 @@
     "dev:all": "concurrently \"bun run dev:ecommerce:backend\" \"bun run dev:ecommerce:frontend\" \"bun run dev:ota:backend\" \"bun run dev:ota:frontend\""
   },
   "devDependencies": {
-    "concurrently": "^9.2.0"
+    "concurrently": "^9.2.0",
+    "vite": "^7.1.3"
   }
 }

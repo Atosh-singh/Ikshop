@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  landing_page:
+    build: ./apps/landing_Page/frontend
+    ports:
+      - "8080:80"  # Landing page ko 8080 pe expose kar rahe hain
+    container_name: landing_page
+
+  ecm_frontend:
+    build: ./apps/ECM/frontend
+    ports:
+      - "8081:80"
+    container_name: ecm_frontend
+
+  ecm_backend:
+    build: ./apps/ECM/backend
+    ports:
+      - "5000:5000"
+    container_name: ecm_backend
+
+  imt_frontend:
+    build: ./apps/IMT/frontend
+    ports:
+      - "8082:80"
+    container_name: imt_frontend
+
+  imt_backend:
+    build: ./apps/IMT/backend
+    ports:
+      - "5001:5000"
+    container_name: imt_backend
