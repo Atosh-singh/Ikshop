@@ -30,12 +30,14 @@ const userSchema = new mongoose.Schema({
       validator: (v) => /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(v),
       message: 'Invalid email format',
     },
+    unique: true,
   },
 
   password: {
     type: String,
     required: true,
      select: false,
+    
   },
 
   phone: {
@@ -81,10 +83,7 @@ const userSchema = new mongoose.Schema({
     }
   ],
 
-  isActive: {
-    type: Boolean,
-    default: true
-  },
+ 
   otp: {
     type: Number,
     default: null,
@@ -107,6 +106,12 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
     select: false,
+  },
+
+   slug: {
+    type: String,
+    unique: true,  // Ensure that the slug is unique
+    trim: true,
   },
 
 }, {

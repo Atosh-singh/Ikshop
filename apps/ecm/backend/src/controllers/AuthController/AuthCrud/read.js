@@ -1,14 +1,21 @@
 // controllers/AuthController/AuthCrud/read.js
 const { User } = require('@/models/User');
+const findByIdOrSlug = require('@/utils/findByIdOrSlug');  // Helper to find by ID or Slug
 
 const readUser = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params;  // This is either the username or slug
 
-    const user = await User.findById(id)
-      .select("-password -otp -otpCreatedAt")
-      .populate("role", "name permissions")
-      .populate("addresses");
+    // Use the helper to search by _id or slug
+    let user = await findByIdOrSlug(User, id);
+
+    // If user not found by _id or slug, try searching by fullname
+    if (!user) {
+      user = await User.findOne({ fullname: new RegExp(id, 'i') }) // Case-insensitive search by fullname
+        .select("-password -otp -otpCreatedAt")
+        .populate("role", "name permissions")
+        .populate("addresses");
+    }
 
     if (!user) {
       return res.status(404).json({

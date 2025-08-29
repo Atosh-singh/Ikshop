@@ -1,7 +1,7 @@
 // controllers/AuthController/AuthCrud/update.js
-const { User } = require('@/models/User.js');
+const { User } = require('@/models/User');
 const { validationResult } = require('express-validator');
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 
 const updateUser = async (req, res) => {
   try {
@@ -13,7 +13,7 @@ const updateUser = async (req, res) => {
     const { id } = req.params;
     const updateData = { ...req.body };
 
-    // Agar password update ho raha hai
+    // Hash password if it is updated
     if (updateData.password) {
       if (updateData.password.length < 6) {
         return res.status(400).json({
@@ -27,7 +27,7 @@ const updateUser = async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
-    }).select("-password"); // password hide karo
+    }).select("-password");  // Do not return the password
 
     if (!updatedUser) {
       return res.status(404).json({

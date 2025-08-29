@@ -49,6 +49,11 @@ const shopSchema = new mongoose.Schema({
     trim: true,
     default: "", // Default empty logo URL
   },
+   slug: {
+    type: String,
+    unique: true,  // Ensure that the slug is unique
+    trim: true,
+  },
   shopType: {
     type: String,
     enum: ['physical', 'online', 'hybrid'], // Type of shop (physical, online, or hybrid)

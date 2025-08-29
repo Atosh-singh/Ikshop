@@ -27,6 +27,7 @@ const categorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',  // Reference to another category (for subcategories)
     default: null,    // Default to null if not a subcategory
+    required: false,
   },
   slug: {
     type: String,
@@ -49,10 +50,7 @@ const categorySchema = new mongoose.Schema({
   },
 
   // Additional fields
-  isActive: {
-    type: Boolean,
-    default: true,    // Flag to indicate if the category is active
-  },
+ 
   productsCount: {
     type: Number,
     default: 0,       // Number of products in this category (for optimization)

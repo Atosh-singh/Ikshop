@@ -14,6 +14,11 @@ shop:{
     ref:"Shop",
     required: true,
 },
+ slug: {
+    type: String,
+    unique: true,  // Ensure that the slug is unique
+    trim: true,
+  },
 
 // Array of products in the order
 products: [

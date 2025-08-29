@@ -14,6 +14,11 @@ const productSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+   slug: {
+    type: String,
+    unique: true,  // Ensure that the slug is unique
+    trim: true,
+  },
   sku: {
     type: String,
     trim: true,

@@ -78,7 +78,13 @@ const roleSchema = new mongoose.Schema({
         'settings:update'
       ]
     }
-  ]
+  ],
+
+   slug: {
+    type: String,
+    unique: true,  // Ensure that the slug is unique
+    trim: true,
+  },
 }, { timestamps: true });
 
 // Index for faster role lookups

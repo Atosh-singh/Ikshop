@@ -1,0 +1,11 @@
+bradlc.vscode-tailwindcss
+christian-kohler.npm-intellisense
+christian-kohler.path-intellisense
+dbaeumer.vscode-eslint
+esbenp.prettier-vscode
+github.copilot
+github.copilot-chat
+pkief.material-icon-theme
+rangav.vscode-thunder-client
+ritwickdey.liveserver
+rodrigovallades.es7-react-js-snippets

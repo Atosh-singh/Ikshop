@@ -1,0 +1,19 @@
+
+* For Nested populate use this idea
+
+app.get('/get-user-with-rights', async (req,res) =>{
+  const data = await User.findOne({name:''}).populate({
+    path:'staff',
+    populate:{
+      path:"rights",
+      model:'right',
+      populate:{
+        path:'author',
+        model:'User'  
+      }
+    }
+  })
+})
+
+
+// outer populate h uske andar ek or populate h uske andar ek or polpulate h 

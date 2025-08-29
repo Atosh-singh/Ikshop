@@ -1,25 +1,15 @@
 // controllers/AuthController/AuthCrud/index.js
-const { User } = require("@/models/User");
+const {createUser,userRegister }= require('./create');  // Create user
+const paginateUsers = require('./paginate');  // Paginate users (listUsers functionality)
+const readUser = require('./read');      // Read single user by ID
+const updateUser = require('./update');  // Update user by ID
+const removeUser = require('./remove');  // Soft delete user
 
-const listUsers = async (req, res) => {
-  try {
-    const users = await User.find({ removed: false })
-      .select("-password -otp -otpCreatedAt")
-      .populate("role", "name permissions")
-      .populate("addresses");
-
-    return res.status(200).json({
-      success: true,
-      count: users.length,
-      data: users,
-    });
-  } catch (error) {
-    console.error("Error listing users:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Server error",
-    });
-  }
+module.exports = {
+  createUser,
+  userRegister,
+  paginateUsers,  // Export paginateUsers as the function for listing users with pagination
+  readUser,
+  updateUser,
+  removeUser
 };
-
-module.exports = listUsers;

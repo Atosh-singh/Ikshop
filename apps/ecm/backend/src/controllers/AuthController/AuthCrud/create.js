@@ -1,7 +1,8 @@
 // controllers/AuthController/AuthCrud/create.js
 const { User } = require('@/models/User');
 const { validationResult } = require('express-validator');
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
+const slugify = require('slugify');  // To generate slugs from fullname
 
 const createUser = async (req, res) => {
   try {
@@ -12,26 +13,30 @@ const createUser = async (req, res) => {
 
     const { fullname, username, email, phone, password, role, isAdmin, enabled, mobile_access } = req.body;
 
-    // Password strength check
-    if (!password || password.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: "Password must be at least 6 characters long",
-      });
-    }
+    // Generate slug from fullname
+    const slug = slugify(fullname, { lower: true, strict: true });
 
+    // Check if user already exists
     const existingUser = await User.findOne({
       $or: [{ email }, { username }, { phone }]
     });
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "User already exists with this email, username or phone"
+        message: "User already exists with this email, username, or phone"
       });
     }
 
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Handle image upload if provided
+    let imagePath = null;
+    if (req.file) {
+      imagePath = 'images/' + req.file.filename; // Save the image file path
+    }
+
+    // Create new user
     const newUser = new User({
       fullname,
       username,
@@ -42,11 +47,13 @@ const createUser = async (req, res) => {
       isAdmin: isAdmin ?? false,
       enabled: enabled ?? true,
       mobile_access: mobile_access ?? false,
+      slug,  // Save the slug field
+      photo: imagePath,  // Store the image path or null if no file is uploaded
     });
 
     const savedUser = await newUser.save();
 
-    // 🔴 password response me na bheje
+    // Do not return password in response
     const { password: _, ...userWithoutPassword } = savedUser.toObject();
 
     return res.status(201).json({
@@ -64,4 +71,64 @@ const createUser = async (req, res) => {
   }
 };
 
-module.exports = createUser;
+
+
+
+// controllers/AuthController/AuthCrud/create.js
+
+const userRegister = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+
+    const { fullname, username, email, password, phone } = req.body;
+
+    // Check if user exists
+    const isExist = await User.findOne({ email });
+    if (isExist) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists",
+      });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Handle image upload if provided
+    let imagePath = null;
+    if (req.file) {
+      imagePath = 'images/' + req.file.filename;  // Assign the image path if file is uploaded
+    }
+
+    // Create new user
+    const newUser = new User({
+      fullname,
+      username,
+      email,
+      phone,
+      password: hashedPassword,
+      photo: imagePath,  // Store the image path or null if no file is uploaded
+    });
+
+    // Save user
+    const savedUser = await newUser.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "User created successfully",
+      data: savedUser,
+    });
+
+  } catch (err) {
+    return res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+module.exports = { createUser, userRegister };
+
