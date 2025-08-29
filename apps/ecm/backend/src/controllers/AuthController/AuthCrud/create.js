@@ -74,7 +74,7 @@ const createUser = async (req, res) => {
 
 
 
-// controllers/AuthController/AuthCrud/create.js
+// controllers/AuthController/AuthCrud/register
 
 const userRegister = async (req, res) => {
   try {
