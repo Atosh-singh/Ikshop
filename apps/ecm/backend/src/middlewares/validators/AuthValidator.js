@@ -1,10 +1,12 @@
+// middleware/validators/AuthValidator.js
+
 const { body } = require("express-validator");
 
 const createUserValidator = [
   body("fullname")
     .trim()
     .isLength({ min: 2 })
-    .withMessage("Full name isss required"),
+    .withMessage("Full name is required"),
 
   body("username")
     .trim()
@@ -59,18 +61,18 @@ const createUserValidator = [
     .isBoolean()
     .withMessage("mobile_access must be a boolean"),
 
-    // Image validation (only when a file is uploaded)
-      body('image')
-        .custom((value, { req }) => {
-          if (req.file) {
-            const fileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-            if (!fileTypes.includes(req.file.mimetype)) {
-              throw new Error('Only .jpeg, .jpg, .png formats are allowed!');
-            }
-          }
-          return true;
-        })
-        .withMessage('Invalid image file. Allowed formats are .jpeg, .jpg, .png'),
+  // Image validation (only when a file is uploaded)
+  body('image')
+    .custom((value, { req }) => {
+      if (req.file) {
+        const fileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        if (!fileTypes.includes(req.file.mimetype)) {
+          throw new Error('Only .jpeg, .jpg, .png formats are allowed!');
+        }
+      }
+      return true;
+    })
+    .withMessage('Invalid image file. Allowed formats are .jpeg, .jpg, .png'),
 ];
 
 module.exports = {
