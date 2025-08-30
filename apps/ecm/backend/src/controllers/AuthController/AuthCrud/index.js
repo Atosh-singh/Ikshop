@@ -1,5 +1,5 @@
 // controllers/AuthController/AuthCrud/index.js
-const {createUser,userRegister }= require('./create');  // Create user
+const {createUser,userRegister, mailVerification }= require('./create');  // Create user
 const paginateUsers = require('./paginate');  // Paginate users (listUsers functionality)
 const readUser = require('./read');      // Read single user by ID
 const updateUser = require('./update');  // Update user by ID
@@ -11,5 +11,6 @@ module.exports = {
   paginateUsers,  // Export paginateUsers as the function for listing users with pagination
   readUser,
   updateUser,
-  removeUser
+  removeUser,
+  mailVerification
 };

@@ -3,6 +3,7 @@ const { User } = require('@/models/User');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const slugify = require('slugify');  // To generate slugs from fullname
+const mailer = require("../../../utils/mailer")
 
 const createUser = async (req, res) => {
   try {
@@ -18,12 +19,12 @@ const createUser = async (req, res) => {
 
     // Check if user already exists
     const existingUser = await User.findOne({
-      $or: [{ email }, { username }, { phone }]
+      $or: [{ email }, { username }, { phone }],
     });
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "User already exists with this email, username, or phone"
+        message: "User already exists with this email, username, or phone",
       });
     }
 
@@ -47,11 +48,15 @@ const createUser = async (req, res) => {
       isAdmin: isAdmin ?? false,
       enabled: enabled ?? true,
       mobile_access: mobile_access ?? false,
-      slug,  // Save the slug field
-      photo: imagePath,  // Store the image path or null if no file is uploaded
+      slug, // Save the slug field
+      photo: imagePath, // Store the image path or null if no file is uploaded
     });
 
     const savedUser = await newUser.save();
+
+    // Send verification email
+    const msg = '<p> hii, ' + fullname + ', Please <a href="http://localhost:5001/api/mail-verification?='+ savedUser._id+'">Verify</a> your mail. <p>';
+    mailer.sendMail(email, 'Mail Verification', msg);
 
     // Do not return password in response
     const { password: _, ...userWithoutPassword } = savedUser.toObject();
@@ -130,5 +135,29 @@ const userRegister = async (req, res) => {
   }
 };
 
-module.exports = { createUser, userRegister };
+
+const mailVerification = async (req, res) => {
+
+  try {
+
+if(req.queryid==undefined){
+  return res.render('404', { title: '404 Not Found' });
+}
+
+const savedUser=  User.findOne({_id:req.queryid});
+
+if(savedUser){
+
+}else{
+return res.render('mail-verification', {message:"User not found", title: 'Mail Verification' });
+}
+
+  }catch (error) {
+    console.error(error.message);
+    return res.render('404', { title: '404 Not Found' });
+  }
+}
+
+
+module.exports = { createUser, userRegister, mailVerification };
 
