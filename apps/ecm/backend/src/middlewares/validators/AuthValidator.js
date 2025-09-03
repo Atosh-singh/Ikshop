@@ -109,10 +109,10 @@ const loginValidator = [
 const updateProfileValidator = [
  
 
-  body('email')
-    .isEmail()
-    .withMessage('Valid email is required')
-    .normalizeEmail({ gmail_remove_dots: true }),
+   body("username")
+    .trim()
+    .isLength({ min: 3 })
+    .withMessage("Username must be at least 3 characters"),
 
   body('phone')
     .notEmpty()
