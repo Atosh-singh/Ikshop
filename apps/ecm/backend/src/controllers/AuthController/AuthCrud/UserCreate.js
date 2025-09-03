@@ -173,8 +173,11 @@ const sendMailVerification = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   createUser,
   mailVerification,
   sendMailVerification,
+
 };

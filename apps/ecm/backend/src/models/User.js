@@ -1,6 +1,7 @@
 // models/User.js
 const mongoose = require('mongoose');
 const Address= require("./Address")
+const Product = require("./Product")
 
 const userSchema = new mongoose.Schema({
   removed: {

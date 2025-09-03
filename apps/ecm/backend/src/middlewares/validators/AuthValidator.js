@@ -105,9 +105,35 @@ const loginValidator = [
 ];
 
 
+
+const updateProfileValidator = [
+ 
+
+  body('email')
+    .isEmail()
+    .withMessage('Valid email is required')
+    .normalizeEmail({ gmail_remove_dots: true }),
+
+  body('phone')
+    .notEmpty()
+    .withMessage('Phone number is required')
+    .isLength({ min: 10, max: 10 })
+    .withMessage('Phone number must be exactly 10 digits')
+    .isNumeric()
+    .withMessage('Phone number must contain only numbers'),
+
+
+
+ 
+]; 
+
 module.exports = {
   createUserValidator,
   sendMailVerificationValidator,
   passwordResetValidator,
-  loginValidator
+  loginValidator,
+  updateProfileValidator
 };
+
+
+

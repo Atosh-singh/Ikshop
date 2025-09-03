@@ -7,9 +7,7 @@ const { validationResult } = require("express-validator");
 const generateAccessToken = (user) => {
   const tokenPayload = {
     _id: user._id,
-    email: user.email,
-    username: user.username,
-    isAdmin: user.isAdmin,
+   
   };
 
   return jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: "24h" });

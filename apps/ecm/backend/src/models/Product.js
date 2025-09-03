@@ -1,50 +1,19 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const productSchema = new mongoose.Schema({
-  removed: {
-    type: Boolean,
-    default: false,
-  },
-  enabled: {
-    type: Boolean,
-    default: true, // Flag for whether the product is active or disabled
-  },
+// Define the Product Schema
+const productSchema = new Schema({
   name: {
     type: String,
     required: true,
-    trim: true,
-  },
-   slug: {
-    type: String,
-    unique: true,  // Ensure that the slug is unique
-    trim: true,
-  },
-  sku: {
-    type: String,
-    trim: true,
-    unique: true, // SKU should be unique for each product
-  },
-  description: {
-    type: String,
-    trim: true, // Optional field with description
-    default: '',  // Default empty string if not provided
   },
   price: {
     type: Number,
-    required: true, // Price must be provided for every product
+    required: true,
   },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category", // Reference to the Category model
-    required: true, // Product must belong to a category
-  },
-  shop: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Shop", // Reference to the Shop model
-    required: true, // Product must belong to a shop
-  },
-}, { timestamps: true }); // Automatic timestamps (createdAt, updatedAt)
+  // You can add more fields as needed, such as description, category, etc.
+});
 
 const Product = mongoose.model("Product", productSchema);
 
-module.exports = Product;
+module.exports = { Product };
