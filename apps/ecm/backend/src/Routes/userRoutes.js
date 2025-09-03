@@ -1,42 +1,43 @@
-
-
-// Routes/userRoutes.js
 const express = require("express");
 const router = express.Router();
-const fs = require('fs');
-const path = require("path");
+const uploadFile = require("../utils/uploadFile");
 
-const multer = require("multer");
-
-   const  uploadFile = require("../utils/uploadFile")
+const { createUserValidator, sendMailVerificationValidator,passwordResetValidator, loginValidator } = require("../middlewares/validators/AuthValidator");
 
 
+const { createUser, mailVerification, sendMailVerification,forgotPassword, showResetForm, resetPassword,resetSuccess, loginUser} = require("../controllers/AuthController/AuthCrud");
 
 
-// Validators
-const { createUserValidator } = require("../middlewares/validators/AuthValidator");
 
-const {registerValidator} = require('../helpers/validation')
+// Register new user  and Create a new user
+router.post("/", uploadFile('image', 'public/images').single('image'), createUserValidator, createUser);
 
-// Controllers
-const { createUser, paginateUsers, readUser, updateUser, removeUser, userRegister } = require("../controllers/AuthController/AuthCrud");
 
-// Create a new user
-router.post("/",  uploadFile('image', 'public/images').single('image'), createUserValidator,createUser);
+// Mail verification endpoint
+router.get("/mail-verification", mailVerification);
 
-// Paginated listing of users
-router.get("/", paginateUsers);
+// Resend verification email
 
-// Get single user by ID
-router.get("/:id", readUser);
+router.post("/resend-mail-verification", sendMailVerificationValidator, sendMailVerification);
 
-// Update user by ID
-router.put("/:id", updateUser);
+router.post("/forgot-password" , passwordResetValidator,forgotPassword )
 
-// Soft delete user by ID
-router.delete("/:id", removeUser);
+// Reset password form (EJS)
+router.get("/reset-password", showResetForm);
 
-router.post("/register",uploadFile('image', 'public/images').single('image'),registerValidator, userRegister);
+// Reset password submit
+router.post("/reset-password", resetPassword);
 
+// Reset password success page
+router.get("/reset-success", resetSuccess);
+
+// Login user
+router.post("/login", loginValidator,loginUser )
 
 module.exports = router;
+
+
+
+
+
+

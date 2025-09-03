@@ -1,16 +1,30 @@
 // controllers/AuthController/AuthCrud/index.js
-const {createUser,userRegister, mailVerification }= require('./create');  // Create user
+const {createUser, mailVerification, sendMailVerification}= require('./UserCreate');  // Create user
 const paginateUsers = require('./paginate');  // Paginate users (listUsers functionality)
 const readUser = require('./read');      // Read single user by ID
 const updateUser = require('./update');  // Update user by ID
 const removeUser = require('./remove');  // Soft delete user
 
+const { loginUser } = require('./login'); // Login controller
+ 
+const { forgotPassword } = require('./forgotPassword'); // Forgot password controller
+
+
+const { showResetForm, resetPassword, resetSuccess } = require('./resetPassword'); // Reset password controllers
+
+
 module.exports = {
   createUser,
-  userRegister,
-  paginateUsers,  // Export paginateUsers as the function for listing users with pagination
+paginateUsers,  // Export paginateUsers as the function for listing users with pagination
   readUser,
   updateUser,
   removeUser,
-  mailVerification
+  mailVerification,
+  sendMailVerification,
+  forgotPassword,
+  showResetForm,
+  resetPassword,
+  resetSuccess,
+  loginUser
+  
 };

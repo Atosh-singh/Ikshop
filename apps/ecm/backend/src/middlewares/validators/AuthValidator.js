@@ -4,7 +4,7 @@ const createUserValidator = [
   body("fullname")
     .trim()
     .isLength({ min: 2 })
-    .withMessage("Full name isss required"),
+    .withMessage("Full name is required"),
 
   body("username")
     .trim()
@@ -14,13 +14,10 @@ const createUserValidator = [
   body('email')
     .isEmail()
     .withMessage('Valid email is required')
-    .normalizeEmail({
-      gmail_remove_dots: true, // Remove dots from Gmail addresses
-    }),
+    .normalizeEmail({ gmail_remove_dots: true }),
 
   body('phone')
-    .not()
-    .isEmpty()
+    .notEmpty()
     .withMessage('Phone number is required')
     .isLength({ min: 10, max: 10 })
     .withMessage('Phone number must be exactly 10 digits')
@@ -59,20 +56,58 @@ const createUserValidator = [
     .isBoolean()
     .withMessage("mobile_access must be a boolean"),
 
-    // Image validation (only when a file is uploaded)
-      body('image')
-        .custom((value, { req }) => {
-          if (req.file) {
-            const fileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-            if (!fileTypes.includes(req.file.mimetype)) {
-              throw new Error('Only .jpeg, .jpg, .png formats are allowed!');
-            }
-          }
-          return true;
-        })
-        .withMessage('Invalid image file. Allowed formats are .jpeg, .jpg, .png'),
+  // Optional: remove image validation from here if already handled in upload middleware
+  body('image')
+    .custom((value, { req }) => {
+      if (req.file) {
+        const fileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        if (!fileTypes.includes(req.file.mimetype)) {
+          throw new Error('Only .jpeg, .jpg, .png formats are allowed!');
+        }
+      }
+      return true;
+    })
+    .withMessage('Invalid image file. Allowed formats are .jpeg, .jpg, .png'),
 ];
+
+const sendMailVerificationValidator = [
+  body('email')
+    .isEmail()
+    .withMessage('Valid email is required')
+    .normalizeEmail({ gmail_remove_dots: true }),
+];
+
+const passwordResetValidator = [
+  body('email')
+    .isEmail()
+    .withMessage('Valid email is required')
+    .normalizeEmail({ gmail_remove_dots: true }),
+];
+
+
+
+
+
+const loginValidator = [
+  body("email")
+    .optional()
+    .isEmail()
+    .withMessage("Valid email is required")
+    .normalizeEmail({ gmail_remove_dots: true }),
+  body("username")
+    .optional()
+    .isString()
+    .withMessage("Username must be a string"),
+
+     body("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters long"),
+];
+
 
 module.exports = {
   createUserValidator,
+  sendMailVerificationValidator,
+  passwordResetValidator,
+  loginValidator
 };
