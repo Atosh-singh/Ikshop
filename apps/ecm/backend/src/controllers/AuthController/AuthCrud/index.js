@@ -15,6 +15,7 @@ const { showResetForm, resetPassword, resetSuccess } = require('./resetPassword'
 const {userProfile, updateProfile} = require('./UserProfile');
 
 
+
 module.exports = {
   createUser,
 paginateUsers,  // Export paginateUsers as the function for listing users with pagination
@@ -29,6 +30,6 @@ paginateUsers,  // Export paginateUsers as the function for listing users with p
   resetSuccess,
   loginUser,
   userProfile,
-  updateProfile
-  
+  updateProfile,
+
 };

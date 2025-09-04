@@ -1,6 +1,11 @@
 const { User } = require("@/models/User");
 const { validationResult } = require("express-validator");
+const {deleteFile}=  require("../../../helpers/deleteFile");
+const path = require('path');
 
+
+
+// GET USER PROFILE
 const userProfile = async (req, res) => {
   try {
     // Get user ID from JWT (set by authenticate middleware)
@@ -38,10 +43,11 @@ const userProfile = async (req, res) => {
 };
 
 
+// UPDATE USER PROFILE
 
 const updateProfile = async (req, res) => {
   try {
-    // Validate request body
+    // Step 1: Validate the request body for errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -50,30 +56,45 @@ const updateProfile = async (req, res) => {
       });
     }
 
-    // Extract updated data from the request body
+    // Step 2: Extract updated data from the request body
     const { username, email, phone } = req.body;
-
-    // Log the request body for debugging
     console.log(`Update profile - username: ${username}, email: ${email}, phone: ${phone}`);
 
-    // Prepare the data object for update
+    // Step 3: Prepare the update data object
     const data = {
       username,
       email,
       phone,
     };
 
-    // Handle file upload (image)
-    if (req.file) {
-      data.photo = "images/" + req.file.filename; // Save image file path
+    const user_id = req.user._id;
+
+    // Step 4: Handle file upload (image)
+    if (req.file !== undefined) {
+      data.photo = "images/" + req.file.filename; // Save new image path
+      console.log("New Image Path:", data.photo); // Log the new image path
+
+      // Step 5: Fetch current user data
+      const oldUser = await User.findById(user_id);
+      if (oldUser && oldUser.photo) {
+        // Step 6: Get the old image path
+        const oldFilePath = path.join(__dirname, "../../../../public/" + oldUser.photo);
+        console.log("Old Image Path:", oldFilePath); // Log the old image path
+        
+        // Step 7: Delete the old image if it exists
+        try {
+          await deleteFile(oldFilePath);
+          console.log("Old Image Deleted Successfully!"); // Log after deletion
+        } catch (err) {
+          console.error("Error deleting old image:", err.message); // Log any errors during deletion
+        }
+      }
     }
 
-    // Update the user in the database
-    const userData = await User.findByIdAndUpdate(req.user._id, {
-      $set: data, // Use $set to update only the fields you want
-    }, { new: true }); // Return the updated user data
+    // Step 8: Update the user in the database
+    const userData = await User.findByIdAndUpdate(user_id, { $set: data }, { new: true });
 
-    // Check if the user was found and updated
+    // Step 9: Check if the user was updated successfully
     if (!userData) {
       return res.status(404).json({
         success: false,
@@ -81,11 +102,11 @@ const updateProfile = async (req, res) => {
       });
     }
 
-    // Return the updated user data in the response
+    // Step 10: Return the updated user data in the response
     return res.status(200).json({
       success: true,
       message: "User profile updated successfully.",
-      data: userData, // Send updated user data
+      data: userData, // Return the updated user data
     });
   } catch (error) {
     console.error(`Update profile error:`, error);
@@ -98,7 +119,58 @@ const updateProfile = async (req, res) => {
 
 
 
+
+const removeProfile= async(req,res) => {
+  try {
+ const { id } = req.params;
+// Soft delete user (mark as removed and disabled)
+    const user = await User.findByIdAndUpdate(
+      id,
+      { 
+        removed: true, 
+        removedAt: new Date(),
+        enabled: false  // Disable user account
+      },
+      { new: true }
+    );
+
+     if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+
+    return res.status(200).json({
+      success: true,
+      message: "User removed successfully (soft delete)",
+      data: user
+    });
+
+
+  }catch (error){
+    return res.status(500).json({
+      status:false,
+      message: `Error while removing`,error,
+      
+    })
+  }
+}
+
+
+
+
+
+
+
+ 
+
+
+
+
 module.exports = {
   userProfile,
   updateProfile,
+  removeProfile
 };
