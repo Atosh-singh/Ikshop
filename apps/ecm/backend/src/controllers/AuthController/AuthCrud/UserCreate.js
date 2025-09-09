@@ -1,4 +1,4 @@
-const { User } = require("@/models/User");
+const { User } = require("../../../models/User");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const slugify = require("slugify");
@@ -72,7 +72,7 @@ const createUser = async (req, res) => {
       <p>Please verify your email by clicking the link below:</p>
       <a href="${getVerificationLink(savedUser._id)}">Verify Your Email</a>
     `;
-    await sendMail(email, "Email Verification", msg);
+    await sendMail(email,  "Email Verification", msg);
 
     const { password: _, ...userWithoutPassword } = savedUser.toObject();
 

@@ -1,24 +1,18 @@
-// controllers/AuthController/AuthCrud/index.js
-const {createUser, mailVerification, sendMailVerification,}= require('./UserCreate');  // Create user
-const paginateUsers = require('./paginate');  // Paginate users (listUsers functionality)
-const readUser = require('./read');      // Read single user by ID
-const updateUser = require('./update');  // Update user by ID
-const removeUser = require('./remove');  // Soft delete user
+const { createUser, mailVerification, sendMailVerification } = require('./UserCreate'); 
+const paginateUsers = require('./paginate'); 
+const readUser = require('./read');      
+const updateUser = require('./update');  
+const removeUser = require('./remove');  
 
-const { loginUser } = require('./login'); // Login controller
- 
-const { forgotPassword } = require('./forgotPassword'); // Forgot password controller
-
-
-const { showResetForm, resetPassword, resetSuccess } = require('./resetPassword'); // Reset password controllers
-
-const {userProfile, updateProfile} = require('./UserProfile');
-
-
+const { loginUser, refreshToken } = require('./login'); 
+const { forgotPassword } = require('./forgotPassword'); 
+const { showResetForm, resetPassword, resetSuccess } = require('./resetPassword'); 
+const { userProfile, updateProfile } = require('./UserProfile');
+const { logout } = require('./logout');
 
 module.exports = {
   createUser,
-paginateUsers,  // Export paginateUsers as the function for listing users with pagination
+  paginateUsers,
   readUser,
   updateUser,
   removeUser,
@@ -31,5 +25,6 @@ paginateUsers,  // Export paginateUsers as the function for listing users with p
   loginUser,
   userProfile,
   updateProfile,
-
+  refreshToken,
+  logout
 };

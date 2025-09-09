@@ -13,6 +13,18 @@ const generateAccessToken = (user) => {
   return jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: "24h" });
 };
 
+
+// Generate Refresh Token
+const generateRefreshToken = (user) => {
+  const tokenPayload = {
+    _id: user._id,
+   
+  };
+
+  return jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn: "48h" });
+};
+
+
 const loginUser = async (req, res) => {
   try {
     // 1️⃣ Run validators
@@ -98,6 +110,12 @@ const loginUser = async (req, res) => {
     // 6️⃣ Generate token
     const accessToken = generateAccessToken(userData);
 
+
+    // Generate Refresh Token 
+    
+    const refreshToken = generateRefreshToken(userData)
+  
+
     // 7️⃣ Respond with user info + token
     return res.status(200).json({
       success: true,
@@ -113,6 +131,7 @@ const loginUser = async (req, res) => {
         lastActivityAt: userData.lastActivityAt,
       },
       accessToken,
+      refreshToken,
       tokenType: "Bearer",
       expiresIn: "24h",
     });
@@ -127,4 +146,34 @@ const loginUser = async (req, res) => {
 };
 
 
-module.exports = { loginUser };
+const refreshToken = async (req,res) => {
+  try{
+const userId = req.user._id;
+
+
+const userData =  await User.findOne({_id:userId});
+
+const accessToken = await generateAccessToken({user: userData});
+const refreshToken = await generateRefreshToken({user: userData});
+
+return res.status(200).json({
+  success: true,
+  msg:'Token Refreshed!',
+  accessToken:accessToken,
+  refreshToken:refreshToken
+})
+
+console.log('refreshtoken:', userData)
+  }catch(error){
+    console.log('Refresh token received');
+
+    return res.status(500).json({
+      success:false,
+      message:error.message,
+
+    })
+  }
+}
+
+
+module.exports = { loginUser, refreshToken };

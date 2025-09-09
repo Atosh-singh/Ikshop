@@ -10,7 +10,7 @@ const {
   updateProfileValidator,
 } = require("../middlewares/validators/AuthValidator");
 
-const { authenticate } = require("../middlewares/authenticate"); // Import the authenticate middleware
+const { authenticate } = require("../middlewares/authenticate"); // Auth middleware
 
 const {
   createUser,
@@ -23,9 +23,11 @@ const {
   loginUser,
   userProfile,
   updateProfile,
+  refreshToken,
+  logout
 } = require("../controllers/AuthController/AuthCrud");
 
-// Register new user and Create a new user
+// Register new user
 router.post(
   "/",
   uploadFile("image", "public/images").single("image"),
@@ -43,7 +45,7 @@ router.post(
   sendMailVerification
 );
 
-// Forgot password route
+// Forgot password
 router.post("/forgot-password", passwordResetValidator, forgotPassword);
 
 // Reset password form (EJS)
@@ -55,16 +57,13 @@ router.post("/reset-password", resetPassword);
 // Reset password success page
 router.get("/reset-success", resetSuccess);
 
-// Login user (No authentication needed here)
+// Login user
 router.post("/login", loginValidator, loginUser);
 
-// Profile user (authenticated)
-router.get(
-     "/profile",
-      authenticate,
-       userProfile
-    );
+// Get user profile (requires authentication)
+router.get("/profile", authenticate, userProfile);
 
+// Update user profile (requires authentication)
 router.post(
   "/update-profile",
   authenticate,
@@ -72,5 +71,11 @@ router.post(
   updateProfileValidator,
   updateProfile
 );
+
+// Refresh token (requires authentication)
+router.get("/refresh-token", authenticate, refreshToken);
+
+// Logout user (requires authentication, simple response only)
+router.get("/logout", authenticate, logout);
 
 module.exports = router;

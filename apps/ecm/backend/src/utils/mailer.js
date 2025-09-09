@@ -14,6 +14,8 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendMail = async (email, subject, content) => {
+  console.log(email,subject,content)
+  
   try {
     const mailOptions = {
       from: process.env.SMTP_MAIL,
@@ -21,6 +23,8 @@ const sendMail = async (email, subject, content) => {
       subject,
       html: content,
     };
+
+    
 
     const info = await transporter.sendMail(mailOptions);
     console.log("Email sent successfully:", info.messageId);

@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+ const { body } = require("express-validator");
 
 const createUserValidator = [
   body("fullname")
@@ -134,6 +134,5 @@ module.exports = {
   loginValidator,
   updateProfileValidator
 };
-
 
 
