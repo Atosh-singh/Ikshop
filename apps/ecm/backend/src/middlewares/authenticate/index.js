@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
+const { Blacklisted } = require('@/models/blacklist');
 
 const authenticate = async (req, res, next) => {
   try {
-    // Extract token from header, body, or query
+    // Extract token
     const token = req.headers["authorization"]?.split(" ")[1] || req.body.token || req.query.token;
 
     if (!token) {
@@ -12,11 +13,21 @@ const authenticate = async (req, res, next) => {
       });
     }
 
+    // Check if token is blacklisted
+    const blacklistedToken = await Blacklisted.findOne({ token });
+    if (blacklistedToken) {
+      return res.status(401).json({
+        success: false,
+        msg: "This session is invalid. Please log in again.",
+      });
+    }
+
     // Verify token
     const decodedData = jwt.verify(token, process.env.JWT_SECRET);
 
     // Attach user info to request
     req.user = decodedData;
+    req.token = token; // optional: logout me use ke liye
 
     next(); // proceed
   } catch (error) {
