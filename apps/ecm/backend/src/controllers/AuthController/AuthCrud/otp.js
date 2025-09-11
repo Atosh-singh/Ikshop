@@ -25,26 +25,28 @@ const sendOtp = async (req, res) => {
     }
 
     // Check if the OTP can be sent again after 1 minute
-    const oldOtpData = await Otp.findOne({ user_id: user._id });
-    if (oldOtpData) {
-      const sendNextOtp = await oneMinuteExpiry(oldOtpData.timestamp);
-      if (!sendNextOtp) {
-        return res.status(400).json({
-          success: false,
-          message: 'Please try after some time!'
-        });
-      }
-    }
+   const oldOtpData = await Otp.findOne({ user_id: user._id });
+if (oldOtpData && oldOtpData.timestamp) {
+  const canSendNextOtp = oneMinuteExpiry(oldOtpData.timestamp);
+  if (!canSendNextOtp) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please try after some time!'
+    });
+  }
+}
+
 
     const otpValue = generateRandom5digit();
     const currentDate = new Date();
 
     // Update or insert new OTP data
-    await Otp.findOneAndUpdate(
-      { user_id: user._id },
-      { otp: otpValue, timestamp: currentDate }, // Set timestamp to now
-      { upsert: true, new: true, setDefaultsOnInsert: true }
-    );
+  await Otp.findOneAndUpdate(
+  { user_id: user._id },
+  { otp: otpValue, timestamp: new Date() }, // Set timestamp to now
+  { upsert: true, new: true, setDefaultsOnInsert: true }
+);
+
 
     const msg = `<p>Hi <b>${user.fullname}</b>,</p>
                  <p>Your OTP is <b>${otpValue}</b>. It expires in 15 minutes.</p>`;
