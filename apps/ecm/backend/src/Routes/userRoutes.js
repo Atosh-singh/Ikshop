@@ -30,8 +30,7 @@ const {
   sendOtp, 
   verifyOtp,
   removeUser,
-  deleteUser,
-  getdata
+ 
 } = require("../controllers/AuthController/AuthCrud");
 
 // Register new user
@@ -92,10 +91,7 @@ router.post('/send-otp',otpMailValidator, sendOtp )
 router.post('/verify-otp',verifyOtpValidator, verifyOtp )
 
 
+router.delete('/remove-user', removeUser)
 
-/// delete routes
-router.delete('/delete-user', deleteUser )
-
-router.get("/get-data/:id", getdata)
 
 module.exports = router;
