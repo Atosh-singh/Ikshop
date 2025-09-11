@@ -29,6 +29,8 @@ const createUser = async (req, res) => {
       mobile_access,
     } = req.body;
 
+    
+
     const slug = slugify(fullname, { lower: true, strict: true });
 
     // Check if user exists

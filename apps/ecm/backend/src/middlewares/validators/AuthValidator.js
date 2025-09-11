@@ -121,18 +121,42 @@ const updateProfileValidator = [
     .withMessage('Phone number must be exactly 10 digits')
     .isNumeric()
     .withMessage('Phone number must contain only numbers'),
-
-
-
- 
 ]; 
+
+
+
+
+const otpMailValidator = [
+  body('email')
+    .isEmail()
+    .withMessage('Valid email is required')
+    .normalizeEmail({ gmail_remove_dots: true }),
+];
+
+
+
+
+const verifyOtpValidator = [
+  body('user_id')
+    .notEmpty()
+    .withMessage('User ID is required'),
+
+  body('otp')
+    .notEmpty()
+    .withMessage('OTP is required'),
+];
+
+
+
 
 module.exports = {
   createUserValidator,
   sendMailVerificationValidator,
   passwordResetValidator,
   loginValidator,
-  updateProfileValidator
+  updateProfileValidator,
+  otpMailValidator,
+  verifyOtpValidator
 };
 
 

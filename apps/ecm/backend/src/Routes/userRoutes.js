@@ -8,6 +8,8 @@ const {
   passwordResetValidator,
   loginValidator,
   updateProfileValidator,
+  otpMailValidator,
+   verifyOtpValidator
 } = require("../middlewares/validators/AuthValidator");
 
 const { authenticate } = require("../middlewares/authenticate"); // Auth middleware
@@ -24,7 +26,12 @@ const {
   userProfile,
   updateProfile,
   refreshToken,
-  logout
+  logout,
+  sendOtp, 
+  verifyOtp,
+  removeUser,
+  deleteUser,
+  getdata
 } = require("../controllers/AuthController/AuthCrud");
 
 // Register new user
@@ -77,5 +84,18 @@ router.get("/refresh-token", authenticate, refreshToken);
 
 // Logout user (requires authentication, simple response only)
 router.get("/logout", authenticate, logout);
+
+
+// otp verification routes
+
+router.post('/send-otp',otpMailValidator, sendOtp )
+router.post('/verify-otp',verifyOtpValidator, verifyOtp )
+
+
+
+/// delete routes
+router.delete('/delete-user', deleteUser )
+
+router.get("/get-data/:id", getdata)
 
 module.exports = router;

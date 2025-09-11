@@ -1,14 +1,23 @@
-const { createUser, mailVerification, sendMailVerification } = require('./UserCreate'); 
-const paginateUsers = require('./paginate'); 
-const readUser = require('./read');      
-const updateUser = require('./update');  
-const removeUser = require('./remove');  
+const {
+  createUser,
+  mailVerification,
+  sendMailVerification,
+} = require("./UserCreate");
+const paginateUsers = require("./paginate");
+const readUser = require("./read");
+const updateUser = require("./update");
+const {removeUser, deleteUser, getdata} = require("./remove");
 
-const { loginUser, refreshToken } = require('./login'); 
-const { forgotPassword } = require('./forgotPassword'); 
-const { showResetForm, resetPassword, resetSuccess } = require('./resetPassword'); 
-const { userProfile, updateProfile } = require('./UserProfile');
-const { logout } = require('./logout');
+const { loginUser, refreshToken } = require("./login");
+const { forgotPassword } = require("./forgotPassword");
+const {
+  showResetForm,
+  resetPassword,
+  resetSuccess,
+} = require("./resetPassword");
+const { userProfile, updateProfile } = require("./UserProfile");
+const { logout } = require("./logout");
+const { sendOtp, verifyOtp } = require("./otp");
 
 module.exports = {
   createUser,
@@ -26,5 +35,9 @@ module.exports = {
   userProfile,
   updateProfile,
   refreshToken,
-  logout
+  logout,
+  sendOtp,
+  verifyOtp,
+  deleteUser,
+  getdata
 };
