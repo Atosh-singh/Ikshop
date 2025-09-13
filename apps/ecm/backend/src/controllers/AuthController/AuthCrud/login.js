@@ -39,7 +39,7 @@ const loginUser = async (req, res) => {
 
     // 2️⃣ Ensure at least email OR username is provided and password
     const { email, username, password } = req.body;
-    console.log("Password received:", password); // Added log to see what password is being passed
+   
 
     if (!email && !username) {
       return res.status(400).json({
@@ -62,11 +62,9 @@ const loginUser = async (req, res) => {
    { password: 1 }  // Explicitly select the password field
    ).select('password isVerified fullname email username phone isAdmin photo lastActivityAt'); // Explicitly select relevant fields
 
-   // 4️⃣ Log the full userData object to verify what data is returned
-    console.log("Fetched User Data:", userData); // This logs the complete user object
+  
 
 
-   console.log()
 
     if (!userData) {
       return res.status(404).json({
@@ -75,8 +73,7 @@ const loginUser = async (req, res) => {
       });
     }
 
-    // 4️⃣ Ensure password exists and compare with hashed password
-    console.log("Stored password hash:", userData.password); // Log stored hashed password for comparison
+    
 
     if (!userData.password) {
       return res.status(500).json({
@@ -87,7 +84,7 @@ const loginUser = async (req, res) => {
 
     // Compare the password with the stored hash
     const passwordMatch = await bcrypt.compare(password, userData.password);
-    console.log("Password match result:", passwordMatch); // Log the result of the comparison
+  
 
     if (!passwordMatch) {
       return res.status(401).json({
@@ -97,7 +94,7 @@ const loginUser = async (req, res) => {
     }
 
 
-    console.log("User Verification Status:", userData.isVerified); // Log the actual value of isVerified
+   
 
     // 5️⃣ Optional: Check if user is verified
     if (!userData.isVerified) {

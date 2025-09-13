@@ -12,6 +12,10 @@ const categoryRoutes = require("./categoryRoutes");
 const staffRoutes = require("./staffRoutes");
    const productRoutes = require('./productRoutes')
 
+   // RBAC Routes testing 
+   const RBACRoutes= require('./RBACRoutes')
+   const adminRoutes = require('./adminRoutes')
+
 
 
 // Mount Routes
@@ -21,5 +25,10 @@ router.use("/roles", roleRoutes);
 router.use("/categories", categoryRoutes); 
 router.use("/staffs", staffRoutes);
 router.use("/product", productRoutes);
+
+
+// RBAC Routes
+router.use("/rbac", RBACRoutes)
+router.use("/admin", adminRoutes);
 
 module.exports = router;

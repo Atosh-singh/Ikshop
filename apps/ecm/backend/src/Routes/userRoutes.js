@@ -37,7 +37,7 @@ const {
 router.post(
   "/",
   uploadFile("image", "public/images").single("image"),
-  createUserValidator,
+  // crreateUserValidato,
   createUser
 );
 

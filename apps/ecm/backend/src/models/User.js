@@ -23,8 +23,6 @@ const userSchema = new mongoose.Schema({
     maxlength: 20,
   },
 
- 
-
   email: {
     type: String,
     required: true,
@@ -65,14 +63,17 @@ const userSchema = new mongoose.Schema({
   // role: {
   //   type: mongoose.Schema.Types.ObjectId,
   //   ref: 'Role',
-  // required: true,
-  // default:"User"
 
   // },
+  // isAdmin: {
+  //   type: Boolean,
+  //   default: false,
+  // },
+
 
   role:{
     type: Number,
-    default:0 // 0- Normal User, ! -> Admin, 2 -> Sub-admin, 3-> editor 
+    default:0    // 0 --> users, 1-Admin, 2-sub-admin , 3 - Editor
   },
 
   addresses: [
