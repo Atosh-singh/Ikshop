@@ -48,35 +48,10 @@ const roleSchema = new mongoose.Schema({
     ],
   permissions: [
     {
-      type: String,
-      enum: [
-        // Product permissions
-        'product:create',
-        'product:read',
-        'product:update',
-        'product:delete',
-
-        // Order permissions
-        'order:create',
-        'order:read',
-        'order:update',
-        'order:delete',
-
-        // User permissions
-        'user:read',
-        'user:update',
-        'user:delete',
-
-        // Category permissions
-        'category:create',
-        'category:read',
-        'category:update',
-        'category:delete',
-
-        // Other
-        'analytics:read',
-        'settings:update'
-      ]
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"Permission",
+      required: true,
+     
     }
   ],
 

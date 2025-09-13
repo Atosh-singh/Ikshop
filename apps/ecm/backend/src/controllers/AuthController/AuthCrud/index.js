@@ -6,7 +6,7 @@ const {
 const paginateUsers = require("./paginate");
 const readUser = require("./read");
 const updateUser = require("./update");
-const {removeUser, deleteUser, getdata} = require("./remove");
+const {removeUser} = require("./remove");
 
 const { loginUser, refreshToken } = require("./login");
 const { forgotPassword } = require("./forgotPassword");
@@ -38,6 +38,5 @@ module.exports = {
   logout,
   sendOtp,
   verifyOtp,
-  deleteUser,
-  getdata
+  
 };

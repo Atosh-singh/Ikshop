@@ -1,5 +1,5 @@
 // controllers/AuthController/AuthCrud/remove.js
-const { User } = require('@/models/User');
+const { User } = require("@/models/User");
 
 const removeUser = async (req, res) => {
   try {
@@ -8,10 +8,10 @@ const removeUser = async (req, res) => {
     // Soft delete user (mark as removed and disabled)
     const user = await User.findByIdAndUpdate(
       id,
-      { 
-        removed: true, 
+      {
+        removed: true,
         removedAt: new Date(),
-        enabled: false  // Disable user account
+        enabled: false, // Disable user account
       },
       { new: true }
     );
@@ -19,32 +19,24 @@ const removeUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found"
+        message: "User not found",
       });
     }
 
     return res.status(200).json({
       success: true,
       message: "User removed successfully (soft delete)",
-      data: user
+      data: user,
     });
-
   } catch (error) {
     console.error("Error removing user:", error);
     return res.status(500).json({
       success: false,
-      message: "Server error"
+      message: "Server error",
     });
   }
 };
 
-
-
-
-
-
-
 module.exports = {
- 
-   removeUser}
-   
+  removeUser,
+};

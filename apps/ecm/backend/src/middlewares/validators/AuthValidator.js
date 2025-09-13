@@ -46,6 +46,12 @@ const createUserValidator = [
     .isBoolean()
     .withMessage("isAdmin must be a boolean"),
 
+    //
+      body("position")
+    .optional()
+    .isBoolean()
+    .withMessage("position must be a boolean"),
+
   body("enabled")
     .optional()
     .isBoolean()
