@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background: #f0f4f8;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: inline-block;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    a {
+      color: #1d4ed8;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .redirect-msg {
+      margin-top: 15px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <% if(typeof message !== 'undefined'){ %>
+      <h2><%= message %></h2>
+      <% if(message === 'Email verified successfully'){ %>
+        <p>You can now <a href="/login">log in</a> with your credentials.</p>
+      <% } else { %>
+        <p class="redirect-msg">If you haven't verified your email, please check your inbox.</p>
+      <% } %>
+    <% } else { %>
+      <h2>Something went wrong!</h2>
+      <p class="redirect-msg">
+        <a href="/login">Go to Login</a>
+      </p>
+    <% } %>
+  </div>
+</body>
+</html>
